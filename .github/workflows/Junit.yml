@@ -26,5 +26,5 @@ jobs:
         run: mvn -B test --file pom.xml
       - uses: ashley-taylor/junit-report-annotations-action@master
         with:
-          access-token: ${{ secrets.GITHUB_TOKEN }}
+          access-token: ${{ secrets.lalala }}
         if: always()
