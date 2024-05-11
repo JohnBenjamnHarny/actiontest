@@ -4,6 +4,9 @@ on:
     branches:
       - main
       - v[0-9]+-stable
+  push:
+    branches:
+      - main
 
 permissions: read-all
 
@@ -23,6 +26,7 @@ jobs:
       id: build
       uses: google/clusterfuzzlite/actions/build_fuzzers@v1
       with:
+        language: java
         sanitizer: ${{ matrix.sanitizer }}
         github-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Run Fuzzers (${{ matrix.sanitizer }})
