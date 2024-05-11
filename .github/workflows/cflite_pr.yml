@@ -11,29 +11,29 @@ on:
 permissions: read-all
 
 jobs:
-  PR:
+  BatchFuzzing:
     runs-on: ubuntu-latest
-    if: github.repository != 'systemd/systemd' || github.event.pull_request.user.login == 'dependabot[bot]'
-    concurrency:
-      group: ${{ github.workflow }}-${{ matrix.sanitizer }}-${{ github.ref }}
-      cancel-in-progress: true
     strategy:
       fail-fast: false
       matrix:
-        sanitizer: [address, undefined, memory]
+        sanitizer:
+        - address
+        # Override this with the sanitizers you want.
+        # - undefined
+        # - memory
     steps:
     - name: Build Fuzzers (${{ matrix.sanitizer }})
       id: build
       uses: google/clusterfuzzlite/actions/build_fuzzers@v1
       with:
-        language: jvm
+        language: jvm++ # Change this to the language you are fuzzing.
         sanitizer: ${{ matrix.sanitizer }}
-        github-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Run Fuzzers (${{ matrix.sanitizer }})
       id: run
       uses: google/clusterfuzzlite/actions/run_fuzzers@v1
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        fuzz-seconds: 1200
-        mode: 'code-change'
+        fuzz-seconds: 3600
+        mode: 'batch'
         sanitizer: ${{ matrix.sanitizer }}
+        output-sarif: true
